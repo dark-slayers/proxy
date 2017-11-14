@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="error">
+	<Properties>
+		<Property name="log_dir">D:/logs/proxy</Property>
+		<Property name="log_date">%d{yy-MM-dd 'at' HH:mm:ss SSS}</Property>
+		<Property name="log_content">[%-5level] %class{36} (%M) :%L -> %msg%xEx%n</Property>
+		<Property name="log_text">${log_date} ${log_content}</Property>
+	</Properties>
+	<appenders>
+		<!--输出控制台的配置 -->
+		<Console
+			name="Console"
+			target="SYSTEM_OUT">
+			<!--输出日志的格式 -->
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} ${log_content}" />
+		</Console>
+		<!--这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+		<RollingFile
+			name="DebugFile"
+			fileName="${log_dir}/DEBUG.log"
+			filePattern="${log_dir}/%d{yyyy-MM}/DEBUG-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout
+				charset="UTF-8"
+				pattern="${log_text}" />
+			<SizeBasedTriggeringPolicy size="100MB" />
+		</RollingFile>
+		<RollingFile
+			name="InfoFile"
+			fileName="${log_dir}/INFO.log"
+			filePattern="${log_dir}/%d{yyyy-MM}/INFO-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout
+				charset="UTF-8"
+				pattern="${log_text}" />
+			<SizeBasedTriggeringPolicy size="50MB" />
+		</RollingFile>
+		<RollingFile
+			name="WarnFile"
+			fileName="${log_dir}/WARN.log"
+			filePattern="${log_dir}/%d{yyyy-MM}/WARN-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout
+				charset="UTF-8"
+				pattern="${log_text}" />
+			<SizeBasedTriggeringPolicy size="10MB" />
+		</RollingFile>
+		<RollingFile
+			name="ErrorFile"
+			fileName="${log_dir}/ERROR.log"
+			filePattern="${log_dir}/%d{yyyy-MM}/ERROR-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout
+				charset="UTF-8"
+				pattern="${log_text}" />
+			<SizeBasedTriggeringPolicy size="10MB" />
+		</RollingFile>
+	</appenders>
+	<!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+	<loggers>
+		<Logger
+			name="org.hibernate"
+			level="WARN"
+			additivity="false">
+			<AppenderRef
+				ref="ErrorFile"
+				level="ERROR"/>
+			<AppenderRef
+				ref="Console"
+				level="INFO"/>
+		</Logger>
+		<Logger
+			name="org.springframework"
+			level="WARN"
+			additivity="false" />
+		<Logger
+			name="springfox.documentation"
+			level="WARN"
+			additivity="false" />
+		<Logger
+			name="org.apache"
+			level="WARN"
+			additivity="false" />
+		<Root level="DEBUG">
+			<AppenderRef ref="DebugFile" />
+			<AppenderRef
+				ref="InfoFile"
+				level="INFO" />
+			<AppenderRef
+				ref="WarnFile"
+				level="WARN" />
+			<AppenderRef
+				ref="ErrorFile"
+				level="ERROR" />
+			<AppenderRef ref="Console" />
+		</Root>
+	</loggers>
+</configuration>

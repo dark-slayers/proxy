@@ -1,12 +1,10 @@
 target/
+src/main/resources/static/views/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
 .apt_generated
-.classpath
 .factorypath
-.project
-.settings
 .springBeans
 
 ### IntelliJ IDEA ###
