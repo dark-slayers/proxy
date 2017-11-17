@@ -77,7 +77,7 @@
 			name="org.apache"
 			level="WARN"
 			additivity="false" />
-		<Root level="DEBUG">
+		<Root level="DEBUG" additivity="false">
 			<AppenderRef ref="DebugFile" />
 			<AppenderRef
 				ref="InfoFile"
